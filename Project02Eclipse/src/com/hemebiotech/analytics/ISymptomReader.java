@@ -1,10 +1,8 @@
 package com.hemebiotech.analytics;
 
-import java.util.List;
-
-import java.util.HashMap;
+import java.util.Map;
 
 public interface ISymptomReader {
-	HashMap<String, Integer> addElementToMap(String path_File );
-	void writeAllMapInFile (HashMap<String,Integer> map, String path_File);
+	Map<String, Integer> addElementToMap( String path_File );
+	void writeAllMapInFile (Map<String,Integer> map, String path_File);
 }
