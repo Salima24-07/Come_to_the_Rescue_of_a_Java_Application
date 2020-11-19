@@ -2,39 +2,21 @@ package com.hemebiotech.analytics;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 
-/*
- * Class - ReadSymptomDataFromFile - implémente l'interface - ISymptomReader- 
- * 
- **/
+//Class - ReadSymptomDataFromFile - implémente l'interface - ISymptomReader- 
 public class ReadSymptomDataFromFile implements ISymptomReader {
-
-	private String filepath;
 	
-	public ReadSymptomDataFromFile (String filepath) {
-		this.filepath = filepath;
-	}
+	
 	// Methode - GetSymptoms() - qui lit un ficher et insert des elements de type "Symptom" dans une liste 	
 	@Override
-	public Map<String, Integer> addElementToMap(String path_File) {
-		Map<String, Integer> map = new HashMap<String, Integer>(); 
-		BufferedReader bd = null;
-		FileReader file_Read = null;
-		if (filepath != null) {
+	public List<Symptom> GetSymptoms(String filepath) {
+		
+		List<Symptom> symptoms = null;
 			try {
 				/*
 				 * lire le fichier ligne par ligne, puis on utilise le filtre suivant: 
@@ -42,46 +24,48 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 				  alors, on incrémente la valeur de son propiété "occurence"
 				  sinon, on crée un objet pour le nouveau symptom et initialise sa valeur d'occurence à 1 et on l'insert dans la liste.
 				 */ 
-		    	file_Read = new FileReader (path_File);
-				bd = new BufferedReader (file_Read );
-				String symptom = bd.readLine();	
-				Integer occurence = 1;
-				while (symptom != null) {
-					if(map.get(symptom) == null) {
-						map.put(symptom, 1);
+				BufferedReader reader = new BufferedReader (new FileReader(filepath));
+				symptoms = new ArrayList<Symptom>();
+				String line = reader.readLine();
+				
+				while (line != null) {	
+					String l = line;
+					Symptom symptom = symptoms.stream()
+		  					  .filter(s -> l.equals(s.getSymptom()))
+		  		  			  .findAny().orElse(null);
+					if(symptom != null) {
+						symptom.setOccurence((symptom.getOccurence())+1);
 					}else {
-						map.put(symptom, map.get(symptom)+1 );
+						symptoms.add(new Symptom(line, 1));
 					}
-					symptom = bd.readLine();
+					line = reader.readLine();
 				}
 				
+				reader.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
-		}
-	    	    System.out.println(" ");
-		return map;
-		
-	}
-
-	/*
-    	Methode - writeAllListInFile() - qui prend comme parametre une Map, 
-		et ecrit les valeurs et clés de ses elements, 
-		dans le fichier passé en parametre
-	*/
-	@Override
-	public void writeAllMapInFile(Map<String,Integer> symptoms, String path_File) {
-		
-		try {
-			
-			PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(path_File)));
-			symptoms.entrySet().forEach(s->pw.println(s.getKey() +" = "+ s.getValue()));
-			pw.close();
-			  
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+			// Afficher les valeurs des prorietés des objets de type Sypmtom elements de la liste  
+			symptoms.forEach(s->System.out.println(s.getSymptom()+ " = " +s.getOccurence()));
+		return symptoms;
 	}
 	
+	/* Méthode - writeAllListInFile() - qui prend comme paramètre une liste, 
+		et écrit les valeurs des propriétés symptom et ocuurence de ses elements, dans un fichier passé en paramètre.
+	*/
+	@Override	
+	public void writeAllListInFile(List<Symptom> symptoms, String name_File) {
+			
+			FileWriter fw;
+			try {
+				
+				PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(name_File)));				 
+				symptoms.forEach(s->pw.println(s.getSymptom()+" = "+ s.getOccurence()));
+				pw.close();
+				  
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
+
 }
