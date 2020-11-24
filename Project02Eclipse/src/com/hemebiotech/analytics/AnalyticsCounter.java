@@ -9,6 +9,14 @@ import java.util.Map;
 
 public class AnalyticsCounter {
 	
+	/**
+	 * Initialize the paths of the source and result files, 
+	 * and send them by parameter by calling the methods "addElementToMap" and "writeAllMapInFile"
+	   of the class "ReadSymptomDataFromFile" 
+	 * @author salima
+	 * @param args
+	 */
+	
 	public static void main(String args[]) throws Exception {
 <<<<<<< HEAD
 		
