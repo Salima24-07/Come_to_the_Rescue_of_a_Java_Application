@@ -6,15 +6,20 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
-//Class - ReadSymptomDataFromFile - implémente l'interface - ISymptomReader- 
+/**
+ * 
+ * @author 33641 moihkugjydchyjclo:u!hmouifvktydcjtrx
+ *
+ */
 public class ReadSymptomDataFromFile implements ISymptomReader {
 	
 	
-	// Methode - GetSymptoms() - qui lit un ficher et insert des elements de type "Symptom" dans une liste 	
-	@Override
-	public List<Symptom> GetSymptoms(String filepath) {
+	
+	public List<Symptom> getSymptoms(String filepath) {
 		
 		List<Symptom> symptoms = null;
 			try {
@@ -24,6 +29,7 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 				  alors, on incrémente la valeur de son propiété "occurence"
 				  sinon, on crée un objet pour le nouveau symptom et initialise sa valeur d'occurence à 1 et on l'insert dans la liste.
 				 */ 
+								
 				BufferedReader reader = new BufferedReader (new FileReader(filepath));
 				symptoms = new ArrayList<Symptom>();
 				String line = reader.readLine();
@@ -44,16 +50,16 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 				reader.close();
 			} catch (Exception e) {
 				e.printStackTrace();
+			}finally {
+				//todo
 			}
-			// Afficher les valeurs des prorietés des objets de type Sypmtom elements de la liste  
+			Collections.sort(symptoms, Comparator.comparing(Symptom::getSymptom));
 			symptoms.forEach(s->System.out.println(s.getSymptom()+ " = " +s.getOccurence()));
 		return symptoms;
 	}
 	
-	/* Méthode - writeAllListInFile() - qui prend comme paramètre une liste, 
-		et écrit les valeurs des propriétés symptom et ocuurence de ses elements, dans un fichier passé en paramètre.
-	*/
-	@Override	
+	
+	@Override
 	public void writeAllListInFile(List<Symptom> symptoms, String name_File) {
 			
 			FileWriter fw;
