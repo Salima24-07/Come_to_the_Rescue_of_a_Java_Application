@@ -1,9 +1,4 @@
 package com.hemebiotech.analytics;
-/**
- * 
- * @author 33641
- *
- */
 
 import java.util.Map;
 

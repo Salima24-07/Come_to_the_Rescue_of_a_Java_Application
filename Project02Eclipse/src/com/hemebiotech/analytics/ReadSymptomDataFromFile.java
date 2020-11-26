@@ -47,8 +47,9 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 		
 		Map<String, Integer> symptoms = new HashMap<String, Integer>();
 			
-			try (BufferedReader bd = new BufferedReader (new FileReader(pathFile))){ //(try-with-resources) The stream is automatically closed at the end of the try block	
-				
+			try (BufferedReader bd = new BufferedReader (new FileReader(pathFile))){ /* (try-with-resources) The stream is 
+																				      
+																				      automatically closed at the end of the try block */
 				String symptom = bd.readLine();
 				while (symptom != null) {
 					if(symptoms.get(symptom) == null) {
@@ -56,7 +57,7 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 					}else {
 						symptoms.put(symptom, symptoms.get(symptom)+1 );
 					}
-					symptom = bd.readLine();
+					symptom = bd.readLine(); // get another symptom
 				}
 				
 
@@ -71,15 +72,15 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 	/**
 	 * Method - writeAllListInFile () - which takes a Map as parameter,
 	   and write the values and keys of its elements,
-	   in a file
+	   in the file
 	   @author Salima
 	   @param: a source map
 	 * @param: result file path
 	 */
 	@Override
-	public void writeAllMapInFile(Map<String,Integer> symptoms, String path_File) {
+	public void writeAllMapInFile(Map<String,Integer> symptoms, String pathFile) {
 		
-		try(PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(path_File)))) {
+		try(PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(pathFile)))) {
 			// Afficher les symptoms et ses occurences dans la console
 			symptoms.entrySet().forEach(s->pw.println(s.getKey() +" = "+ s.getValue()));
 			  
