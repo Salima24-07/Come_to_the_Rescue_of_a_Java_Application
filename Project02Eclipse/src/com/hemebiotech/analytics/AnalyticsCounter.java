@@ -1,4 +1,9 @@
 package com.hemebiotech.analytics;
+<<<<<<< Updated upstream
+=======
+
+import java.util.Map;
+>>>>>>> Stashed changes
 
 public class AnalyticsCounter {
 	
